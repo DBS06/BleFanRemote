@@ -8,7 +8,7 @@ class FanControl
 {
 public:
     FanControl();
-    FanControl(FanControl &&) = default;
+    FanControl(FanControl &&)      = default;
     FanControl(const FanControl &) = default;
     FanControl &operator=(FanControl &&) = default;
     FanControl &operator=(const FanControl &) = default;
@@ -16,14 +16,14 @@ public:
 
     void init(void);
 
+    void process(void);
+
 private:
     BLEService mFanCtrlService;
-    BLEBooleanCharacteristic mFanPower;
-
-    bool mPower;
-    uint8_t mSpeed;
-    bool mTurn;
-    uint8_t mTimerState;
+    BLEBooleanCharacteristic mPower;
+    BLEBooleanCharacteristic mSpeed;
+    BLEBooleanCharacteristic mTurn;
+    BLEBooleanCharacteristic mTimerState;
 };
 
-#endif // !FAN_CONTROL_H
+#endif  // !FAN_CONTROL_H

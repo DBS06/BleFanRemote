@@ -1,12 +1,13 @@
-#include "FanControl.h"
 #include <ArduinoBLE.h>
+
+#include "FanControl.h"
 
 FanControl fanControl;
 
-size_t keepAlivePrevMs = 0;
+size_t keepAlivePrevMs     = 0;
 size_t keepAliveIntervalMs = 500;
 
-size_t blePrevMs = 0;
+size_t blePrevMs     = 0;
 size_t bleIntervalMs = 200;
 
 bool isIntervalOver(size_t prevMs, const size_t interval);
@@ -44,24 +45,8 @@ void loop()
 
         while (central.connected())
         {
-            // if (isIntervalOver(blePrevMs, bleIntervalMs))
-            // {
-            //     fanCtrl.power = fanPower.value();
-            //     // fanPower.writeValue(batteryLevel);
-            // }
-
-            // if (fanCtrl.power)
-            // {
-            //     Serial.println("Power On");
-            //     digitalWrite(LED_BUILTIN, HIGH);
-            // }
-            // else
-            // {
-            //     Serial.println("Power Off");
-            //     digitalWrite(LED_BUILTIN, LOW);
-            // }
+            fanControl.process();
         }
-        // digitalWrite(LED_BUILTIN, LOW);
         if (isIntervalOver(keepAlivePrevMs, keepAliveIntervalMs))
         {
             Serial.print("Disconnected from central: ");
@@ -72,13 +57,13 @@ void loop()
 
 bool isIntervalOver(size_t prevMs, const size_t interval)
 {
-    bool ret = false;
+    bool ret     = false;
     size_t curMs = millis();
 
     if (curMs - prevMs >= interval)
     {
         prevMs = curMs;
-        ret = true;
+        ret    = true;
     }
 
     return ret;
