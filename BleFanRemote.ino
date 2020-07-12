@@ -1,17 +1,7 @@
+#include "FanControl.h"
 #include <ArduinoBLE.h>
 
-BLEService fanCtrlService("1101");
-BLEBooleanCharacteristic fanPower("2101", BLERead | BLEWrite | BLENotify);
-
-struct FanCtrl
-{
-    bool power;
-    uint8_t speed;
-    bool turn;
-    uint8_t state;
-};
-
-FanCtrl fanCtrl = {false, 0, false, 0};
+FanControl fanControl;
 
 size_t keepAlivePrevMs = 0;
 size_t keepAliveIntervalMs = 500;
@@ -37,10 +27,7 @@ void setup()
     }
 
     BLE.setLocalName("FanControl");
-    BLE.setAdvertisedService(fanCtrlService);
-    fanCtrlService.addCharacteristic(fanPower);
-    BLE.addService(fanCtrlService);
-
+    fanControl.init();
     BLE.advertise();
     Serial.println("Bluetooth device active, waiting for connections...");
 }
@@ -57,22 +44,22 @@ void loop()
 
         while (central.connected())
         {
-            if (isIntervalOver(blePrevMs, bleIntervalMs))
-            {
-                fanCtrl.power = fanPower.value();
-                // fanPower.writeValue(batteryLevel);
-            }
+            // if (isIntervalOver(blePrevMs, bleIntervalMs))
+            // {
+            //     fanCtrl.power = fanPower.value();
+            //     // fanPower.writeValue(batteryLevel);
+            // }
 
-            if (fanCtrl.power)
-            {
-                Serial.println("Power On");
-                digitalWrite(LED_BUILTIN, HIGH);
-            }
-            else
-            {
-                Serial.println("Power Off");
-                digitalWrite(LED_BUILTIN, LOW);
-            }
+            // if (fanCtrl.power)
+            // {
+            //     Serial.println("Power On");
+            //     digitalWrite(LED_BUILTIN, HIGH);
+            // }
+            // else
+            // {
+            //     Serial.println("Power Off");
+            //     digitalWrite(LED_BUILTIN, LOW);
+            // }
         }
         // digitalWrite(LED_BUILTIN, LOW);
         if (isIntervalOver(keepAlivePrevMs, keepAliveIntervalMs))
