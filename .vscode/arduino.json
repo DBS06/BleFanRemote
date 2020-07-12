@@ -1,5 +1,0 @@
-{
-    "board": "arduino:mbed:nano33ble",
-    "port": "COM5",
-    "sketch": "BleFanRemote.ino"
-}
