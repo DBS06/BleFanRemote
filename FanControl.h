@@ -15,8 +15,15 @@ public:
     ~FanControl();
 
     void init(void);
-
-    void process(void);
+    void setEventHandlerPower(BLECharacteristicEventHandler eventHandler);
+    void setEventHandlerSpeed(BLECharacteristicEventHandler eventHandler);
+    void setEventHandlerTurn(BLECharacteristicEventHandler eventHandler);
+    void setEventHandlerTimerState(BLECharacteristicEventHandler eventHandler);
+    BLEBooleanCharacteristic &getBleCharacteristicPower(void);
+    BLEBooleanCharacteristic &getBleCharacteristicSpeed(void);
+    BLEBooleanCharacteristic &getBleCharacteristicTurn(void);
+    BLEBooleanCharacteristic &getBleCharacteristicTimerState(void);
+    void setPin(BLEBooleanCharacteristic &characteristic, pin_size_t pin);
 
 private:
     BLEService mFanCtrlService;
@@ -24,6 +31,7 @@ private:
     BLEBooleanCharacteristic mSpeed;
     BLEBooleanCharacteristic mTurn;
     BLEBooleanCharacteristic mTimerState;
+    bool mRunTimerState;
 };
 
 #endif  // !FAN_CONTROL_H
