@@ -2,13 +2,11 @@
 
 #include "FanControl.h"
 
-FanControl fanControl;
+constexpr uint32_t pulseLengthMs = 200;
+FanControl fanControl(pulseLengthMs);
 
 size_t keepAlivePrevMs     = 0;
 size_t keepAliveIntervalMs = 500;
-
-size_t blePrevMs     = 0;
-size_t bleIntervalMs = 200;
 
 pin_size_t powerPin      = 2;
 pin_size_t speedPin      = 3;
@@ -16,7 +14,9 @@ pin_size_t turnPin       = 4;
 pin_size_t timerStatePin = 5;
 pin_size_t wavePin       = 6;
 
-bool isIntervalOver(size_t prevMs, const size_t interval);
+int ledState = LOW;
+
+bool isIntervalOver(size_t &prevMs, const size_t interval);
 
 static void PowerCharacteristicWrittenCb(BLEDevice central, BLECharacteristic characteristic)
 {
@@ -51,8 +51,6 @@ static void WaveCharacteristicWrittenCb(BLEDevice central, BLECharacteristic cha
 void setup()
 {
     Serial.begin(115200);
-    while (!Serial)
-        ;
 
     pinMode(LED_BUILTIN, OUTPUT);
     pinMode(powerPin, OUTPUT);
@@ -91,21 +89,29 @@ void loop()
 
         while (central.connected())
         {
-            // fanControl.process();
             digitalWrite(LED_BUILTIN, HIGH);
-            // delay(10);
         }
 
-        if (isIntervalOver(keepAlivePrevMs, keepAliveIntervalMs))
-        {
-            Serial.print("Disconnected from central: ");
-            Serial.println(central.address());
-        }
+        Serial.print("Disconnected from central: ");
+        Serial.println(central.address());
         digitalWrite(LED_BUILTIN, LOW);
+    }
+
+    if (isIntervalOver(keepAlivePrevMs, keepAliveIntervalMs))
+    {
+        if (ledState == LOW)
+        {
+            ledState = HIGH;
+        }
+        else
+        {
+            ledState = LOW;
+        }
+        digitalWrite(LED_BUILTIN, ledState);
     }
 }
 
-bool isIntervalOver(size_t prevMs, const size_t interval)
+bool isIntervalOver(size_t &prevMs, const size_t interval)
 {
     bool ret     = false;
     size_t curMs = millis();

@@ -7,7 +7,7 @@
 class FanControl
 {
 public:
-    FanControl();
+    FanControl(uint32_t pulseLengthMs);
     FanControl(FanControl &&)      = default;
     FanControl(const FanControl &) = default;
     FanControl &operator=(FanControl &&) = default;
@@ -34,6 +34,7 @@ private:
     BLEBooleanCharacteristic mTurn;
     BLEBooleanCharacteristic mTimerState;
     BLEBooleanCharacteristic mWave;
+    const uint32_t mPulseLengthMs;
 };
 
 #endif  // !FAN_CONTROL_H

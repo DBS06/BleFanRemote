@@ -1,12 +1,13 @@
 #include "FanControl.h"
 
-FanControl::FanControl() :
+FanControl::FanControl(uint32_t pulseLengthMs) :
     mFanCtrlService("1101"),
     mPower("2101", BLERead | BLEWrite | BLENotify),
     mSpeed("2102", BLERead | BLEWrite | BLENotify),
     mTurn("2103", BLERead | BLEWrite | BLENotify),
     mTimerState("2104", BLERead | BLEWrite | BLENotify),
-    mWave("2105", BLERead | BLEWrite | BLENotify)
+    mWave("2105", BLERead | BLEWrite | BLENotify),
+    mPulseLengthMs(pulseLengthMs)
 {
 }
 
@@ -80,7 +81,7 @@ void FanControl::setValue(BLEBooleanCharacteristic &characteristic, pin_size_t p
     if (characteristic.value())
     {
         digitalWrite(pin, HIGH);
-        delay(200);
+        delay(mPulseLengthMs);
         digitalWrite(pin, LOW);
         characteristic.writeValue(false);
     }
