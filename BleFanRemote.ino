@@ -19,54 +19,26 @@ bool isIntervalOver(size_t prevMs, const size_t interval);
 
 static void PowerCharacteristicWrittenCb(BLEDevice central, BLECharacteristic characteristic)
 {
-    fanControl.setPin(fanControl.getBleCharacteristicPower(), powerPin);
-    if (fanControl.getBleCharacteristicPower().value())
-    {
-        Serial.println("Power On");
-    }
-    else
-    {
-        Serial.println("Power Off");
-    }
+    fanControl.setValue(fanControl.getBleCharacteristicPower(), powerPin);
+    Serial.println("Power");
 }
 
 static void SpeedCharacteristicWrittenCb(BLEDevice central, BLECharacteristic characteristic)
 {
-    fanControl.setPin(fanControl.getBleCharacteristicSpeed(), speedPin);
-    if (fanControl.getBleCharacteristicSpeed().value())
-    {
-        Serial.println("Speed On");
-    }
-    else
-    {
-        Serial.println("Speed Off");
-    }
+    fanControl.setValue(fanControl.getBleCharacteristicSpeed(), speedPin);
+    Serial.println("Speed");
 }
 
 static void TurnCharacteristicWrittenCb(BLEDevice central, BLECharacteristic characteristic)
 {
-    fanControl.setPin(fanControl.getBleCharacteristicTurn(), turnPin);
-    if (fanControl.getBleCharacteristicTurn().value())
-    {
-        Serial.println("Turn On");
-    }
-    else
-    {
-        Serial.println("Turn Off");
-    }
+    fanControl.setValue(fanControl.getBleCharacteristicTurn(), turnPin);
+    Serial.println("Turn");
 }
 
 static void TimerCharacteristicWrittenCb(BLEDevice central, BLECharacteristic characteristic)
 {
-    fanControl.setPin(fanControl.getBleCharacteristicTimerState(), timerStatePin);
-    if (fanControl.getBleCharacteristicTimerState().value())
-    {
-        Serial.println("Timer On");
-    }
-    else
-    {
-        Serial.println("Timer Off");
-    }
+    fanControl.setValue(fanControl.getBleCharacteristicTimerState(), timerStatePin);
+    Serial.println("Timer");
 }
 
 void setup()

@@ -2,10 +2,10 @@
 
 FanControl::FanControl() :
     mFanCtrlService("1101"),
-    mPower("2101", BLERead | BLEWrite),
-    mSpeed("2102", BLERead | BLEWrite),
-    mTurn("2103", BLERead | BLEWrite),
-    mTimerState("2104", BLERead | BLEWrite),
+    mPower("2101", BLERead | BLEWrite | BLENotify),
+    mSpeed("2102", BLERead | BLEWrite | BLENotify),
+    mTurn("2103", BLERead | BLEWrite | BLENotify),
+    mTimerState("2104", BLERead | BLEWrite | BLENotify),
     mRunTimerState(false)
 {
 }
@@ -65,14 +65,13 @@ BLEBooleanCharacteristic &FanControl::getBleCharacteristicTimerState(void)
     return mTimerState;
 }
 
-void FanControl::setPin(BLEBooleanCharacteristic &characteristic, pin_size_t pin)
+void FanControl::setValue(BLEBooleanCharacteristic &characteristic, pin_size_t pin)
 {
     if (characteristic.value())
     {
         digitalWrite(pin, HIGH);
-    }
-    else
-    {
+        delay(200);
         digitalWrite(pin, LOW);
+        characteristic.writeValue(false);
     }
 }

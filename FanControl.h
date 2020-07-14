@@ -23,7 +23,7 @@ public:
     BLEBooleanCharacteristic &getBleCharacteristicSpeed(void);
     BLEBooleanCharacteristic &getBleCharacteristicTurn(void);
     BLEBooleanCharacteristic &getBleCharacteristicTimerState(void);
-    void setPin(BLEBooleanCharacteristic &characteristic, pin_size_t pin);
+    void setValue(BLEBooleanCharacteristic &characteristic, pin_size_t pin);
 
 private:
     BLEService mFanCtrlService;
