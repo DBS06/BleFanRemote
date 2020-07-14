@@ -6,7 +6,7 @@ FanControl::FanControl() :
     mSpeed("2102", BLERead | BLEWrite | BLENotify),
     mTurn("2103", BLERead | BLEWrite | BLENotify),
     mTimerState("2104", BLERead | BLEWrite | BLENotify),
-    mRunTimerState(false)
+    mWave("2105", BLERead | BLEWrite | BLENotify)
 {
 }
 
@@ -21,7 +21,7 @@ void FanControl::init(void)
     mFanCtrlService.addCharacteristic(mSpeed);
     mFanCtrlService.addCharacteristic(mTurn);
     mFanCtrlService.addCharacteristic(mTimerState);
-
+    mFanCtrlService.addCharacteristic(mWave);
     BLE.addService(mFanCtrlService);
 }
 
@@ -45,6 +45,11 @@ void FanControl::setEventHandlerTimerState(BLECharacteristicEventHandler eventHa
     mTimerState.setEventHandler(BLEWritten, eventHandler);
 }
 
+void FanControl::setEventHandlerWave(BLECharacteristicEventHandler eventHandler)
+{
+    mWave.setEventHandler(BLEWritten, eventHandler);
+}
+
 BLEBooleanCharacteristic &FanControl::getBleCharacteristicPower(void)
 {
     return mPower;
@@ -63,6 +68,11 @@ BLEBooleanCharacteristic &FanControl::getBleCharacteristicTurn(void)
 BLEBooleanCharacteristic &FanControl::getBleCharacteristicTimerState(void)
 {
     return mTimerState;
+}
+
+BLEBooleanCharacteristic &FanControl::getBleCharacteristicWave(void)
+{
+    return mWave;
 }
 
 void FanControl::setValue(BLEBooleanCharacteristic &characteristic, pin_size_t pin)

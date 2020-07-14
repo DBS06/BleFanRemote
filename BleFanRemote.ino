@@ -14,6 +14,7 @@ pin_size_t powerPin      = 2;
 pin_size_t speedPin      = 3;
 pin_size_t turnPin       = 4;
 pin_size_t timerStatePin = 5;
+pin_size_t wavePin       = 6;
 
 bool isIntervalOver(size_t prevMs, const size_t interval);
 
@@ -41,6 +42,12 @@ static void TimerCharacteristicWrittenCb(BLEDevice central, BLECharacteristic ch
     Serial.println("Timer");
 }
 
+static void WaveCharacteristicWrittenCb(BLEDevice central, BLECharacteristic characteristic)
+{
+    fanControl.setValue(fanControl.getBleCharacteristicWave(), wavePin);
+    Serial.println("Wave");
+}
+
 void setup()
 {
     Serial.begin(115200);
@@ -52,6 +59,7 @@ void setup()
     pinMode(speedPin, OUTPUT);
     pinMode(turnPin, OUTPUT);
     pinMode(timerStatePin, OUTPUT);
+    pinMode(wavePin, OUTPUT);
 
     if (!BLE.begin())
     {
@@ -66,6 +74,7 @@ void setup()
     fanControl.setEventHandlerSpeed(SpeedCharacteristicWrittenCb);
     fanControl.setEventHandlerTurn(TurnCharacteristicWrittenCb);
     fanControl.setEventHandlerTimerState(TimerCharacteristicWrittenCb);
+    fanControl.setEventHandlerWave(WaveCharacteristicWrittenCb);
 
     BLE.advertise();
     Serial.println("Bluetooth device active, waiting for connections...");

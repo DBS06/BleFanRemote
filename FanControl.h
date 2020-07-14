@@ -19,10 +19,12 @@ public:
     void setEventHandlerSpeed(BLECharacteristicEventHandler eventHandler);
     void setEventHandlerTurn(BLECharacteristicEventHandler eventHandler);
     void setEventHandlerTimerState(BLECharacteristicEventHandler eventHandler);
+    void setEventHandlerWave(BLECharacteristicEventHandler eventHandler);
     BLEBooleanCharacteristic &getBleCharacteristicPower(void);
     BLEBooleanCharacteristic &getBleCharacteristicSpeed(void);
     BLEBooleanCharacteristic &getBleCharacteristicTurn(void);
     BLEBooleanCharacteristic &getBleCharacteristicTimerState(void);
+    BLEBooleanCharacteristic &getBleCharacteristicWave(void);
     void setValue(BLEBooleanCharacteristic &characteristic, pin_size_t pin);
 
 private:
@@ -31,7 +33,7 @@ private:
     BLEBooleanCharacteristic mSpeed;
     BLEBooleanCharacteristic mTurn;
     BLEBooleanCharacteristic mTimerState;
-    bool mRunTimerState;
+    BLEBooleanCharacteristic mWave;
 };
 
 #endif  // !FAN_CONTROL_H
